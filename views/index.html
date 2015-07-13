@@ -1,0 +1,142 @@
+
+
+<!doctype html>
+<html ng-app="elastsearchApp" >
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="elasticsearch-js/elasticsearch.angular.js"></script>
+    <script src="elasticsearch-js/elasticsearch.js"></script>
+    <script src="elastsearchApp.js"></script>
+
+    <link href="bootstrap.css" rel="stylesheet">
+    <link href="webApp.css" rel="stylesheet">
+
+</head>
+<body ng-controller="elastCtrl as elastCtrl" class="full">
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Movie Library</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse" >
+            <ul class="nav navbar-nav navbar-right">
+                <a class="btn btn-primary dropdown-toggle" style="margin-top:8px;"  data-toggle="dropdown" href="#"> Log in <span class="caret"></span></a>
+                <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                    <form action="/login" method="post">
+                        <div>
+                            <label>Username:</label>
+                            <input type="text" name="username" />
+                            <br/>
+                        </div>
+                        <div>
+                            <label>Password:</label>
+                            <input type="password" name="password" />
+                        </div>
+                        <div>
+                            <input type="submit" value="Submit" />
+                        </div>
+                    </form>
+
+                </ul>
+                <li><a href="#">Credits</a></li>
+
+            </ul>
+
+
+            <form class="navbar-form" ng-submit="elastCtrl.search()">
+                <div class="dropdown navbar-nav navbar-left" style="margin-right:10px; margin-left: 1px;">
+                    <a class="btn btn-primary dropdown-toggle"  data-toggle="dropdown" href="#"> Search in <span class="caret"></span></a>
+                    <ul class="Dmenu dropdown-menu " role="menu" aria-labelledby="dLabel">
+
+                        <li><button class="SButton btn-block" ng-click="querytype='Title'">Title</button></li>
+                        <li><button class="SButton btn-block" ng-click="querytype='Genre'">Genre</button></li>
+                        <li><button class="SButton btn-block" ng-click="querytype='Actor'">Actor</button></li>
+                        <li><button class="SButton btn-block" ng-click="querytype='Plot'">Plot</button></li>
+                    </ul>
+
+                </div>
+                <input type="text" class="form-control" ng-model="elastCtrl.searchterm"  size="30" placeholder="Keyword ...">
+                <button class="hiddenButton"  type="submit"><img src="Lupe_small.png"></button>
+            </form>
+
+        </div>
+    </div>
+</nav>
+<div>
+    Movies in Library: {{number}} <br>
+    Searchtype: {{querytype}} <br>
+
+
+
+
+    <h4>Search Results:</h4>
+    <div ng-repeat="movie in movies">
+        <button class="MovieButton btn-block" ng-click="count = (count +1)%2" ng-init="count=0">
+            {{movie._source.Title}}
+        </button>
+        <div ng-show="count">
+            <table>
+                <tr> <td>Year:</td><td>{{movie._source.Year}}</td> </tr>
+                <tr> <td>Rated:</td><td>{{movie._source.Rated}}</td> </tr>
+                <tr> <td>Released:</td><td>{{movie._source.Released}}</td> </tr>
+                <tr> <td>Runtime:</td><td>{{movie._source.Runtime}}</td> </tr>
+                <tr> <td>Genre:</td><td>{{movie._source.Genre}}</td> </tr>
+                <tr> <td>Director:</td><td>{{movie._source.Director}}</td> </tr>
+                <tr> <td>Writer:</td><td>{{movie._source.Writer}}</td> </tr>
+                <tr> <td>Actors:</td><td>{{movie._source.Actors}}</td> </tr>
+                <tr> <td>Language:</td><td>{{movie._source.Language}}</td> </tr>
+                <tr> <td>Country:</td><td>{{movie._source.Country}}</td> </tr>
+                <tr> <td>Awards:</td><td>{{movie._source.Awards}}</td> </tr>
+                <tr> <td>Metascore:</td><td>{{movie._source.Metascore}}</td> </tr>
+                <tr> <td>imdbRating:</td><td>{{movie._source.imdbRating}}</td> </tr>
+                <tr> <td>imdbVotes:</td><td>{{movie._source.imdbVotes}}</td> </tr>
+                <tr> <td>imdbID:</td><td>{{movie._source.imdbID}}</td> </tr>
+                <tr> <td>
+
+                        Plot:
+                    </td>
+
+                </td> <td>
+
+                        {{movie._source.Plot}}
+
+                </tr>
+            </table>
+
+            </div>
+    </div>
+
+
+
+
+    <br>
+    <br>
+    <br>
+
+
+
+    <br>
+    <button class="hiddenButton" ng-click="countb = (countb +1)%2" ng-init="countb=0">
+        Cluster-State
+    </button></td>
+    <div ng-show="countb">
+        {{clusterState | json}}
+        {{error }}<br>
+        {{error2}}<br>
+    </div>
+
+
+</div>
+
+</body>
+</html>
+
